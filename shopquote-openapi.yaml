@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-  title: ShopQuote API
+  title: shopQuote API
   version: 1.0.0
-  description: Submit a STEP or DXF file and receive a parsed quote with operations and flat dimensions.
+  description: Unfolds sheet metal parts to generate flat patterns and quote pricing.
 
 servers:
   - url: https://shopquote-api.onrender.com
@@ -10,7 +10,8 @@ servers:
 paths:
   /quote:
     post:
-      summary: Generate a quote for a STEP or DXF file
+      summary: Upload a file to receive quote and flat pattern
+      operationId: getQuote
       requestBody:
         required: true
         content:
@@ -21,17 +22,37 @@ paths:
                 file:
                   type: string
                   format: binary
+                  description: A sheet metal file (.step, .dxf, .fcstd)
       responses:
-        '200':
-          description: Quoting result
+        "200":
+          description: Quote with dimensions and DXF string
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  quoted_part:
-                    type: string
-                  geometry:
+                  quote:
+                    type: number
+                    description: Estimated cost
+                  flat_area_mm2:
+                    type: number
+                    description: Flat pattern area in mm²
+                  bounding_box_mm:
                     type: object
-                  price:
+                    properties:
+                      x:
+                        type: number
+                      y:
+                        type: number
+                      z:
+                        type: number
+                  flat_pattern:
+                    type: object
+                    properties:
+                      flat_x_mm:
+                        type: number
+                      flat_y_mm:
+                        type: number
+                  flat_dxf:
                     type: string
+                    description: Flattened shape as DXF string
