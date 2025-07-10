@@ -1,0 +1,5 @@
+cd "D:\SpazTech\shopQuote\shopQuote GPT\shopquote-api-docs"
+
+git add shopquote-openapi.yaml
+git commit -m "Update OpenAPI schema for /quote tool"
+git push origin main
